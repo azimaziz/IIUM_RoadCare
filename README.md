@@ -21,4 +21,5 @@ To create a mobile application where students and staff can report road potholes
 ## Sequence Diagram
 ![User Sequence](UserSequence.jpg) 
 ![Admin Sequence](AdminSequence.JPG)
+![Admin Sequence](ScreenImplimentation.png)
 
