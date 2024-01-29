@@ -6,23 +6,23 @@
 - Muhammad Haikal Wijdan bin Rizal (1916771)
 
 ## Introduction
-IIUM RoadCare is a handy app for IIUM's students and staff. It lets you report potholes on campus quickly. Just snap a picture and share the location. All reports go to a secure database and show up on a map. You can view, add, or remove your reports. Admins can sort reports by status and manage them. This app makes fixing road problems easier, making the campus better for all.
+IIUM RoadCare is a handy app for IIUM's students and staff, allowing quick and efficient reporting of potholes on campus. Users can snap a picture, share the location, and submit reports to a secure database that visualizes the potholes on a map. The app enables users to view, add, or remove their reports, while admins have the ability to sort and manage reports based on their status. This streamlined process aims to facilitate the resolution of road issues, enhancing the campus environment for all.
 
 ## Objective
-To create a mobile application where students and staff can report road potholes in the IIUM Campus. Users can input location, severity, and additional details about the pothole. It also has a feature to track the status of reported potholes to provide transparency on when they are still pending or have been fixed.
+The primary goal of IIUM RoadCare is to provide a mobile platform for students and staff to report road potholes within the IIUM Campus. The app allows for detailed submissions, including location, severity, and additional notes, and offers transparency through tracking the status of reported potholes, indicating whether they are pending or have been fixed.
 
 ## Features and Functionalities
-- Registration & Login: Students and staff can create accounts and sign in. This keeps track of who reports potholes.
-- Google Map with Markers: The app uses Google Maps to show where each reported pothole is with markers. This helps users see the exact locations of all potholes on campus.
-- Camera and Location Package for Reporting: You can take pictures of potholes and the app finds the location. This helps in giving clear details for each report.
-- Pothole Reporting: Anyone from the university can report potholes. Just use the app to send a picture and location.
-- View My Status Report: Users have a personal page to check the status of their reported potholes. This page shows whether a pothole is still pending or has been resolved.
-- Pothole Review (Admin): Admins can look at all pothole reports. They check the details to understand the issue.
-- Pothole Status Update (Admin): Admins can change the status of potholes, like from "pending" to "fixed". This lets everyone know the current situation.
+- **Registration & Login**: Secure account creation and login process for students and staff, ensuring accountability and personalized experience.
+- **Google Map with Markers**: Integration with Google Maps to display reported potholes using markers, providing precise location information.
+- **Camera and Location Package for Reporting**: Utilizes the device's camera and location services for easy reporting, enhancing the accuracy of pothole information.
+- **Pothole Reporting**: Allows the university community to report potholes conveniently, contributing to campus maintenance efforts.
+- **View My Status Report**: Personalized report tracking for users, offering updates on the resolution status of their reported potholes.
+- **Pothole Review (Admin)**: Administrative access to review all pothole reports, enabling efficient management and prioritization.
+- **Pothole Status Update (Admin)**: Administrative capability to update the status of potholes, keeping the community informed about repair progress.
 
 ## Sequence Diagrams
 ### User Sequence Diagram
-![User Sequence](UserSequence.jpg) 
+![User Sequence](UserSequence.jpg)
 
 ### Admin Sequence Diagram
 ![Admin Sequence](AdminSequence.JPG)
@@ -31,10 +31,10 @@ To create a mobile application where students and staff can report road potholes
 ![Screen Implementation](ScreenImplimentation.png)
 
 ## References
-1. Flutter Auth Login: https://youtu.be/4fucdtPwTWI?si=-d6Hk1DsNiyAYas7
-2. Upload Images to Firebase Storage: https://youtu.be/-NQWNy-5i2E?si=GtWpIXwJR3oobYkv / https://www.geeksforgeeks.org/flutter-upload-images-on-firestore-storage/
-3. Image Picker Package: https://www.youtube.com/watch?v=UEJK3mEBvOg&t=2s
-4. Google Map Setup & Display: https://www.youtube.com/watch?v=M7cOmiSly3Q
-5. Google Map Set Location: https://www.youtube.com/watch?v=s6v8fjtL-Mc
-6. URL Launcher: https://pub.dev/packages/url_launcher
-7. Geocoder: https://pub.dev/packages/geocoder2
+1. [Flutter Auth Login](https://youtu.be/4fucdtPwTWI?si=-d6Hk1DsNiyAYas7)
+2. [Upload Images to Firebase Storage](https://youtu.be/-NQWNy-5i2E?si=GtWpIXwJR3oobYkv) / [GeeksforGeeks Guide](https://www.geeksforgeeks.org/flutter-upload-images-on-firestore-storage/)
+3. [Image Picker Package](https://www.youtube.com/watch?v=UEJK3mEBvOg&t=2s)
+4. [Google Map Setup & Display](https://www.youtube.com/watch?v=M7cOmiSly3Q)
+5. [Google Map Set Location](https://www.youtube.com/watch?v=s6v8fjtL-Mc)
+6. [URL Launcher](https://pub.dev/packages/url_launcher)
+7. [Geocoder](https://pub.dev/packages/geocoder2)
