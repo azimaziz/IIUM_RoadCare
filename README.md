@@ -18,8 +18,21 @@ To create a mobile application where students and staff can report road potholes
 - Pothole Review (Admin)
 - Pothole Status Update (Admin)
 
-## Sequence Diagram
+## Sequence Diagrams
+### User Sequence Diagram
 ![User Sequence](UserSequence.jpg) 
-![Admin Sequence](AdminSequence.JPG)
-![Admin Sequence](ScreenImplimentation.png)
 
+### Admin Sequence Diagram
+![Admin Sequence](AdminSequence.JPG)
+
+### Screen Implementation Diagram
+![Screen Implementation](ScreenImplimentation.png)
+
+## References
+1. Flutter Auth Login: https://youtu.be/4fucdtPwTWI?si=-d6Hk1DsNiyAYas7
+2. Upload Images to Firebase Storage: https://youtu.be/-NQWNy-5i2E?si=GtWpIXwJR3oobYkv / https://www.geeksforgeeks.org/flutter-upload-images-on-firestore-storage/
+3. Image Picker Package: https://www.youtube.com/watch?v=UEJK3mEBvOg&t=2s
+4. Google Map Setup & Display: https://www.youtube.com/watch?v=M7cOmiSly3Q
+5. Google Map Set Location: https://www.youtube.com/watch?v=s6v8fjtL-Mc
+6. URL Launcher: https://pub.dev/packages/url_launcher
+7. Geocoder: https://pub.dev/packages/geocoder2
