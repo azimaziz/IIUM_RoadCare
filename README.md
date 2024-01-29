@@ -19,4 +19,4 @@ Feature and functionalities:
 - Pothole Review (Admin)
 - Pothole Status Update (Admin)
 
-![Alt text](UserSequence.jpg)
+![Alt text](UserSequence.jpg) ![Alt text](AdminSequence.JPG)
