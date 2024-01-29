@@ -6,7 +6,7 @@
 - Muhammad Haikal Wijdan bin Rizal (1916771)
 
 ## Introduction
-Having problems with potholes around the campus? With the IIUM RoadCare app, you can report potholes around the campus with a picture and accurate location to smoothen the fixing progress.
+IIUM RoadCare is a handy app for IIUM's students and staff. It lets you report potholes on campus quickly. Just snap a picture and share the location. All reports go to a secure database and show up on a map. You can view, add, or remove your reports. Admins can sort reports by status and manage them. This app makes fixing road problems easier, making the campus better for all.
 
 ## Objective
 To create a mobile application where students and staff can report road potholes in the IIUM Campus. Users can input location, severity, and additional details about the pothole. It also has a feature to track the status of reported potholes to provide transparency on when they are scheduled for repair or have been fixed.
