@@ -12,11 +12,13 @@ IIUM RoadCare is a handy app for IIUM's students and staff. It lets you report p
 To create a mobile application where students and staff can report road potholes in the IIUM Campus. Users can input location, severity, and additional details about the pothole. It also has a feature to track the status of reported potholes to provide transparency on when they are still pending or have been fixed.
 
 ## Features and Functionalities
-- Student and Staff Registration & Login
-- Camera and Location Package for Reporting
-- Pothole Reporting (Student & Staff)
-- Pothole Review (Admin)
-- Pothole Status Update (Admin)
+- Registration & Login: Students and staff can create accounts and sign in. This keeps track of who reports potholes.
+- Google Map with Markers: The app uses Google Maps to show where each reported pothole is with markers. This helps users see the exact locations of all potholes on campus.
+- Camera and Location Package for Reporting: You can take pictures of potholes and the app finds the location. This helps in giving clear details for each report.
+- Pothole Reporting: Anyone from the university can report potholes. Just use the app to send a picture and location.
+- View My Status Report: Users have a personal page to check the status of their reported potholes. This page shows whether a pothole is still pending or has been resolved.
+- Pothole Review (Admin): Admins can look at all pothole reports. They check the details to understand the issue.
+- Pothole Status Update (Admin): Admins can change the status of potholes, like from "pending" to "fixed". This lets everyone know the current situation.
 
 ## Sequence Diagrams
 ### User Sequence Diagram
