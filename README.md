@@ -18,3 +18,5 @@ Feature and functionalities:
 - Pothole Reporting (Student & Staff)
 - Pothole Review (Admin)
 - Pothole Status Update (Admin)
+
+![Alt text](UserSequence.jpg)
