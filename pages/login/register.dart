@@ -20,6 +20,24 @@ class _registerPageState extends State<registerPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  bool isGoogleSignInLoading = false;
+
+  void handleGoogleSignIn() async { // Step 2: Add Google sign-in handler
+    setState(() {
+      isGoogleSignInLoading = true; // Start loading
+    });
+
+    try {
+      await AuthService().googleSignIn();
+      setState(() {
+        isGoogleSignInLoading = false; // Stop loading on success
+      });
+    } catch (error) {
+      setState(() {
+        isGoogleSignInLoading = false; // Stop loading on error
+      });
+    }
+  }
 
   // Sign Up function
   void signUserUp() async {
@@ -183,14 +201,10 @@ class _registerPageState extends State<registerPage> {
                 const SizedBox(height: 25),
             
                 //google sign in button
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SquareTile(
-                      onTap: () => AuthService().signInWithGoogle(),
-                      imagePath: 'lib/images/GoogleLoginIcon.png'
-                    ),
-                  ],
+                SquareTile(
+                  onTap: isGoogleSignInLoading ? null : handleGoogleSignIn,
+                  imagePath: 'lib/images/GoogleLoginIcon.png',
+                  isLoading: isGoogleSignInLoading,
                 ),
             
                 const SizedBox(height: 50),
