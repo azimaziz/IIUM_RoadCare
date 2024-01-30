@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:roadcare/components/navigation_menu.dart';
-import 'package:roadcare/pages/set_location.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:roadcare/pages/user/set_location.dart';
 
 class CreateReport extends StatefulWidget {
   @override
@@ -63,12 +63,31 @@ class _CreateReportState extends State<CreateReport> {
   }
 
   Future<void> submitReport() async {
+    // Check if the image is selected
     if (_image == null) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Error'),
           content: Text('Please select an image for the report.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    // Check if the location is set
+    if (_selectedLatitude == null || _selectedLongitude == null) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Please set the location for the report.'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -87,21 +106,15 @@ class _CreateReportState extends State<CreateReport> {
 
     try {
       // Image Upload Stage
-      String fileName =
-          'reports/${DateTime.now().millisecondsSinceEpoch}_${_image!.path.split('/').last}';
-      firebase_storage.Reference ref =
-          firebase_storage.FirebaseStorage.instance.ref().child(fileName);
+      String fileName = 'reports/${DateTime.now().millisecondsSinceEpoch}_${_image!.path.split('/').last}';
+      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child(fileName);
       firebase_storage.UploadTask uploadTask = ref.putFile(_image!);
 
       // Listen to upload progress
-      uploadTask.snapshotEvents
-          .listen((firebase_storage.TaskSnapshot snapshot) {
+      uploadTask.snapshotEvents.listen((firebase_storage.TaskSnapshot snapshot) {
         setState(() {
           // Calculate the upload stage progress (0.1 to 0.6 range)
-          _uploadProgress = 0.1 +
-              (snapshot.bytesTransferred.toDouble() /
-                      snapshot.totalBytes.toDouble()) *
-                  0.5;
+          _uploadProgress = 0.1 + (snapshot.bytesTransferred.toDouble() / snapshot.totalBytes.toDouble()) * 0.5;
         });
       });
 
@@ -118,15 +131,14 @@ class _CreateReportState extends State<CreateReport> {
         'longitude': _selectedLongitude,
         'severity': _selectedSeverity,
         'description': _descriptionController.text,
-        'status': 'Pending',
-        'userUID': userUID,
+        'status': 'Pending', 
+        'userUID': userUID,   
         'timestamp': FieldValue.serverTimestamp(),
       });
 
       // Update progress to indicate Firestore update is complete
       setState(() {
-        _uploadProgress =
-            0.9; // Almost complete, leaving some space for finalization
+        _uploadProgress = 0.9; // Almost complete, leaving some space for finalization
       });
 
       // Show success dialog
@@ -149,6 +161,7 @@ class _CreateReportState extends State<CreateReport> {
           ],
         ),
       );
+
     } catch (e) {
       // Handle errors, e.g., show an error dialog
       showDialog(
@@ -180,7 +193,8 @@ class _CreateReportState extends State<CreateReport> {
     }
   }
 
-  @override
+
+@override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
@@ -188,19 +202,15 @@ class _CreateReportState extends State<CreateReport> {
         title: Text("Report Pothole"),
         centerTitle: true,
       ),
-      body: Column(
-        // Wrap your main content in a Column
+      body: Column( // Wrap your main content in a Column
         children: [
           if (_isSubmitting) // Show the progress indicator only when submitting
             LinearProgressIndicator(
-              value:
-                  _uploadProgress, // Bind the progress indicator to the _uploadProgress variable
+              value: _uploadProgress, // Bind the progress indicator to the _uploadProgress variable
               backgroundColor: Colors.grey[300],
-              valueColor: AlwaysStoppedAnimation<Color>(
-                  Colors.blue), // Set the progress bar color to green
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue), // Set the progress bar color to green
             ),
-          Expanded(
-            // Wrap the SingleChildScrollView with Expanded
+          Expanded( // Wrap the SingleChildScrollView with Expanded
             child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25.0),
@@ -208,142 +218,129 @@ class _CreateReportState extends State<CreateReport> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(20),
-                        width: double.infinity,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(12),
+                       Container(
+                          margin: EdgeInsets.all(20),
+                          width: double.infinity,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: _image != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.file(
+                                    _image!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : Center(child: Text('No Image Selected', style: TextStyle(color: Colors.grey[500]))),
                         ),
-                        child: _image != null
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: Image.file(
-                                  _image!,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : Center(
-                                child: Text('No Image Selected',
-                                    style: TextStyle(color: Colors.grey[500]))),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: CircleAvatar(
-                              radius: 25.0,
-                              child: Icon(Icons.photo_camera,
-                                  color: Colors.white, size: 30.0),
-                              backgroundColor: Colors.blue,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            IconButton(
+                              icon: CircleAvatar(
+                                radius: 25.0,
+                                child: Icon(Icons.photo_camera, color: Colors.white, size: 30.0),
+                                backgroundColor: Colors.blue,
+                              ),
+                              onPressed: () {
+                                pickImage(ImageSource.camera);
+                              },
                             ),
-                            onPressed: () {
-                              pickImage(ImageSource.camera);
-                            },
-                          ),
-                          IconButton(
-                            icon: CircleAvatar(
-                              radius: 25.0,
-                              child: Icon(Icons.photo_library,
-                                  color: Colors.white, size: 30.0),
-                              backgroundColor: Colors.blue,
+                            IconButton(
+                              icon: CircleAvatar(
+                                radius: 25.0,
+                                child: Icon(Icons.photo_library, color: Colors.white, size: 30.0),
+                                backgroundColor: Colors.blue,
+                              ),
+                              onPressed: () {
+                                pickImage(ImageSource.gallery);
+                              },
                             ),
-                            onPressed: () {
-                              pickImage(ImageSource.gallery);
-                            },
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: MaterialButton(
-                          onPressed: () async {
-                            final result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => setLocation()),
-                            );
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: MaterialButton(
+                            onPressed: () async {
+                              final result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => setLocation()),
+                              );
 
-                            if (result != null) {
+                              if (result != null) {
+                                setState(() {
+                                  _selectedLatitude = result['latitude'];
+                                  _selectedLongitude = result['longitude'];
+                                });
+                              }
+                            },
+                            color: Colors.blue,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(15.0),
+                            minWidth: double.infinity,
+                            child: Text(
+                              _selectedLatitude != null && _selectedLongitude != null
+                                  ? 'Location: $_selectedLatitude, $_selectedLongitude'
+                                  : 'Set Location',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: DropdownButtonFormField<String>(
+                            decoration: InputDecoration(
+                              labelText: 'Select Severity',
+                              border: OutlineInputBorder(),
+                            ),
+                            value: _selectedSeverity,
+                            items: ['Low', 'Medium', 'High'].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
                               setState(() {
-                                _selectedLatitude = result['latitude'];
-                                _selectedLongitude = result['longitude'];
+                                _selectedSeverity = newValue;
                               });
-                            }
-                          },
-                          color: Colors.blue,
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(15.0),
-                          minWidth: double.infinity,
-                          child: Text(
-                            _selectedLatitude != null &&
-                                    _selectedLongitude != null
-                                ? 'Location: $_selectedLatitude, $_selectedLongitude'
-                                : 'Set Location',
-                            style: TextStyle(fontSize: 16),
+                            },
+                            validator: (value) => value == null ? 'Please select severity' : null,
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            labelText: 'Select Severity',
-                            border: OutlineInputBorder(),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: _descriptionController,
+                            decoration: InputDecoration(
+                              labelText: 'Description',
+                              border: OutlineInputBorder(),
+                            ),
+                            maxLines: 3,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a description';
+                              }
+                              return null;
+                            },
                           ),
-                          value: _selectedSeverity,
-                          items: ['Low', 'Medium', 'High'].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              _selectedSeverity = newValue;
-                            });
-                          },
-                          validator: (value) =>
-                              value == null ? 'Please select severity' : null,
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _descriptionController,
-                          decoration: InputDecoration(
-                            labelText: 'Description',
-                            border: OutlineInputBorder(),
-                          ),
-                          maxLines: 3,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a description';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 16.0),
                         child: ElevatedButton(
-                          onPressed: _isSubmitting
-                              ? null
-                              : () {
-                                  if (_formKey.currentState!.validate()) {
-                                    submitReport();
-                                  }
-                                },
+                          onPressed: _isSubmitting ? null : () {
+                            if (_formKey.currentState!.validate()) {
+                              submitReport();
+                            }
+                          },
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.blue),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                            padding: MaterialStateProperty.all(
-                                EdgeInsets.symmetric(vertical: 16.0)),
-                            minimumSize:
-                                MaterialStateProperty.all(Size(150, 48)),
+                            backgroundColor: MaterialStateProperty.all(Colors.blue),
+                            foregroundColor: MaterialStateProperty.all(Colors.white),
+                            padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 16.0)),
+                            minimumSize: MaterialStateProperty.all(Size(150, 48)),
                           ),
                           child: _isSubmitting
                               ? SizedBox(
@@ -351,8 +348,7 @@ class _CreateReportState extends State<CreateReport> {
                                   height: 24.0,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 3.0,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white),
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                   ),
                                 )
                               : Text('Submit Report'),
