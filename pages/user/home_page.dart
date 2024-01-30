@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:roadcare/pages/login/auth_page.dart';
 import 'package:roadcare/pages//user/report_detail_page.dart';
+import 'package:roadcare/services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -70,13 +71,19 @@ class _HomePageState extends State<HomePage> {
   }
 
    void signUserOut(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
+    try {
+      // Use AuthService to sign out from both Firebase and Google
+      await AuthService().signOut();
 
-    // Navigate to the login screen and remove all routes from the stack
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => AuthPage()),
-      (Route<dynamic> route) => false,
-    );
+      // Navigate to the login screen and remove all routes from the stack
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => AuthPage()),
+        (Route<dynamic> route) => false,
+      );
+    } catch (error) {
+      print("Error signing out: $error");
+      // Optionally, show an error message to the user
+    }
   }
 
   @override
