@@ -41,6 +41,29 @@ class _NewRequestState extends State<NewRequest> {
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child; // Image is fully loaded, return it
+                    return SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                              : null, // Show the loading progress
+                        ),
+                      ),
+                    );
+                  },
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    // If the image fails to load, show an error icon
+                    return Container(
+                      width: 80,
+                      height: 80,
+                      color: Colors.grey[300],
+                      child: Icon(Icons.error, size: 50),
+                    );
+                  },
                 )
               : Container(
                   width: 80,
