@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService{
+   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
     googleSignIn() async {
       try {
@@ -20,6 +21,16 @@ class AuthService{
         print('Error signing in with Google: $error');
       }
     }
+
+    Future<void> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      await _googleSignIn.signOut(); 
+      print("User Signed Out");
+    } catch (error) {
+      print('Error signing out: $error');
+    }
+  }
 
     Future<UserCredential> signInWithGoogle() async {
       final GoogleSignInAccount? googleSignInAccount =
