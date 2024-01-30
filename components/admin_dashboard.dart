@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:roadcare/pages/admin/completed_req.dart';
 import 'package:roadcare/pages/admin/new_request.dart';
 import 'package:roadcare/pages/login/auth_page.dart';
+import 'package:roadcare/services/auth_service.dart';
 
 
 class AdminDashboard extends StatelessWidget {
@@ -11,13 +12,19 @@ class AdminDashboard extends StatelessWidget {
   final user = FirebaseAuth.instance.currentUser!;
 
   void signUserOut(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    
-    // Navigate to the login screen and remove all routes from the stack
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => AuthPage()),
-      (Route<dynamic> route) => false,
-    );
+    try {
+      // Use AuthService to sign out from both Firebase and Google
+      await AuthService().signOut();
+
+      // Navigate to the login screen and remove all routes from the stack
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => AuthPage()),
+        (Route<dynamic> route) => false,
+      );
+    } catch (error) {
+      print("Error signing out: $error");
+      // Optionally, show an error message to the user
+    }
   }
 
   @override
